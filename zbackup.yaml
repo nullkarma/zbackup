@@ -1,0 +1,57 @@
+---
+
+default:
+  pool: backup
+  retention: 6
+  snapname: "%d-%m-%Y-%X"
+  rsync_user: root
+  rsync_key: /root/.ssh/backup
+  rsync_path: /
+  rsync_args:
+    - archive
+    - numeric-ids
+    - hard-links
+    - compress
+    - delete-after
+    - delete-excluded
+    - inplace
+  exclude:
+    - var/log/*
+    - var/cache/*
+    - var/spool/*
+    - var/tmp/*
+    - var/run/*
+    - tmp/*
+    - proc/*
+    - sys/*
+    - run/*
+    - mnt/*
+    - media/*
+    - lost+found
+    - data/*
+    - export/*
+    - rhev/*
+    - space/*
+    - backup/*
+    - var/www/*
+    - root/*
+    - var/lib/puppet/*
+
+backup:
+  group: hosts
+  groups:
+    hosts:
+      retention: 6
+      plans:
+        example_plan:
+            match: "^db[0-9]+.(stage|prod).example.com$"
+            config: plans/example.yaml
+    databases:
+      plans:
+        example_plan:
+          match: "^db[0-9]+.(stage|prod).*$"
+          config: plans/example.yaml
+      exclude:
+        - var/lib/postgresql/*
+        - var/lib/mysql/*
+    applications:

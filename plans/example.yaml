@@ -1,0 +1,34 @@
+---
+
+rsync_user: hansolo
+rsync_key: /root/.ssh/backup
+rsync_args:
+  - archive
+  - numeric-ids
+  - hard-links
+  - compress
+  - delete-after
+  - delete-excluded
+  - inplace
+
+exclude:
+  - var/log/*
+  - var/cache/*
+  - var/spool/*
+  - var/tmp/*
+  - var/run/*
+  - tmp/*
+  - proc/*
+  - sys/*
+  - run/*
+  - mnt/*
+  - media/*
+  - lost+found
+  - data/*
+  - export/*
+  - rhev/*
+  - space/*
+  - backup/*
+  - var/www/*
+  - root/*
+  - var/lib/puppet/*
