@@ -69,9 +69,10 @@ def merge_config(conf):
 
 def create(fs):
     try:
+        log.info("creating Filesystem {}".format(fs))
         sh.zfs("create", fs)
     except sh.ErrorReturnCode_1:
-        print "{} already exists".format(fs)
+        log.warning("{} already exists".format(fs))
 
     for d in [metadata, path.join(mountpoint, 'files')]:
         if not path.exists(d):
@@ -102,6 +103,9 @@ def snapshot(fs):
         sh.zfs("snap", snap_name)
     except sh.ErrorReturnCode_1:
         log.error("Filesystem Snapshot ({}) failed!".format(snap_name))
+        sys.exit(1)
+    except sh.ErrorReturnCode_2:
+        log.error("Filesystem ({}) does not exist!".format(snap_name))
         sys.exit(1)
 
     rotate_snapshots(fs)
@@ -198,3 +202,4 @@ if __name__ == '__main__':
     if options['backup']:
         backup()
         snapshot(filesystem)
+        log.info("Backup completed")
