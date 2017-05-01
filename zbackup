@@ -46,7 +46,7 @@ def update_sync_config(conf):
     config.update(n)
 
 
-def merge_plans(conf):
+def merge_config(conf):
     for pname, pconfig in conf.iteritems():
         if not re.search(pname, filesystem):
             continue
@@ -153,19 +153,23 @@ if __name__ == '__main__':
     with open(configfile, 'rb') as config_fd:
         zconfig = yaml.load(config_fd)
 
-    fs_conf = dict()
-    if path.exists('/etc/zbackup/conf.d'):
-        for cnf in listdir('/etc/zbackup/conf.d'):
-            if not re.match(path.splitext(cnf)[0], path.basename(mountpoint)):
-                continue
+    default_dirs = ['/var/run/zbackup', '/etc/zbackup/conf.d', '/etc/zbackup/plans']
+    for d in default_dirs:
+        if not path.exists(d):
+            makedirs(d)
 
-            with open(path.join('conf.d', cnf)) as confd_fd:
-                fs_conf = yaml.load(confd_fd)
+    fs_conf = dict()
+    for cnf in listdir('/etc/zbackup/conf.d'):
+        if not re.match(path.splitext(cnf)[0], path.basename(mountpoint)):
+            continue
+
+        with open(path.join('conf.d', cnf)) as confd_fd:
+            fs_conf = yaml.load(confd_fd)
 
     config = zconfig['default']
 
-    merge_plans(zconfig)
-    merge_plans(fs_conf)
+    merge_config(zconfig)
+    merge_config(fs_conf)
 
     logdir = config['logdir']
     if not path.exists(logdir):
