@@ -102,11 +102,11 @@ The config would be defined like:
 backup/hosts:
     config:
         rotate: 5
-    exclude:
-        - some/dir/*
-    include:
-        - foo/bar/*
-    plans:
+        exclude:
+            - some/dir/*
+        include:
+            - foo/bar/*
+        plans:
 ```
 
 Every child would inherit its parent config, excludes and includes.
@@ -119,17 +119,17 @@ exclude the `/var/lib/postgresql` directory and inherit all other parameters fro
 backup/hosts:
     config:
         rotate: 5
-    exclude:
-        - some/dir/*
-    include:
-        - foo/bar/*
-    plans:
-        -
-            match: "^db[0-9]+.(prod|stage).example.com$"
-            config:
-                rotate: 10
-                exclude:
-                    - var/lib/postgresql/*
+        exclude:
+            - some/dir/*
+        include:
+            - foo/bar/*
+        plans:
+            -
+                match: "^db[0-9]+.(prod|stage).example.com$"
+                config:
+                    rotate: 10
+                    exclude:
+                        - var/lib/postgresql/*
 ```
 
 Regex Pattern can only be used within a `plan` context. But not at zfc level.
@@ -159,14 +159,14 @@ The config (inheritance) priority is:
 backup/hosts:
     config:
         rotate: 5
-    exclude:
-        - some/dir/*
-    include:
-        - foo/bar/*
-    plans:
-        -
-            match: "^db[0-9]+.(prod|stage).example.com$"
-            plan: /etc/zbackup/plans/database.yaml
+        exclude:
+            - some/dir/*
+        include:
+            - foo/bar/*
+        plans:
+            -
+                match: "^db[0-9]+.(prod|stage).example.com$"
+                plan: /etc/zbackup/plans/database.yaml
 
 backup/hosts/db01.prod.example.com:
     config:
