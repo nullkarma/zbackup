@@ -37,6 +37,19 @@ default:
     - proc/*
     - ...
 ```
+### conf.d
+
+Configuration files can also be placed inside the `conf.d` directory. The filename must match the zfs filesystem name.
+
+#### conf.d/host.example.com.yaml
+
+```yaml
+backup/hosts/host.example.com:
+    config:
+        rotate: 1
+        exclude:
+            - foo/bar/*
+```
 
 ### zfs filesystem config (zfc)
 
@@ -139,7 +152,7 @@ plans:
 
 The config (inheritance) priority is:
 
-```default < zfc parent < plan config < plan file < zfc child```
+```default < zfc parent < plan config < plan file < zfc child < conf.d```
 
 ```yaml
 

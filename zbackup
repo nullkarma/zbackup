@@ -21,7 +21,7 @@ import sys
 import re
 import shlex
 import logging
-from os import path, makedirs
+from os import path, makedirs, listdir
 from datetime import datetime
 from subprocess import Popen, PIPE
 
@@ -34,7 +34,7 @@ def lexer(value):
 
 
 def update_sync_config(conf):
-    for k,v in [(item, conf.get(item, [])) for item in ["exclude", "include"]]:
+    for k, v in [(item, conf.get(item, [])) for item in ["exclude", "include"]]:
         try:
             config[k] += v
         except KeyError:
@@ -53,8 +53,8 @@ def update_sync_config(conf):
     config.update(n)
 
 
-def merge_plans():
-    for pname, pconfig in zconfig.iteritems():
+def merge_plans(conf):
+    for pname, pconfig in conf.iteritems():
         if not re.search(pname, filesystem):
             continue
         update_sync_config(pconfig.get('config').copy())
@@ -143,6 +143,7 @@ def dump_metadata():
     with open(path.join(metadata, 'exclude'), 'wb') as excl:
         excl.writelines('\n'.join(config['exclude']))
 
+
 log = logging.getLogger('zbackup')
 log.setLevel(logging.INFO)
 
@@ -160,9 +161,19 @@ if __name__ == '__main__':
     with open(configfile, 'rb') as config_fd:
         zconfig = yaml.load(config_fd)
 
+    fs_conf = dict()
+    if path.exists('/etc/zbackup/conf.d'):
+        for cnf in listdir('/etc/zbackup/conf.d'):
+            if not re.match(path.splitext(cnf)[0], path.basename(mountpoint)):
+                continue
+
+            with open(path.join('conf.d', cnf)) as confd_fd:
+                fs_conf = yaml.load(confd_fd)
+
     config = zconfig['default']
 
-    merge_plans()
+    merge_plans(zconfig)
+    merge_plans(fs_conf)
 
     logdir = config['logdir']
     if not path.exists(logdir):
