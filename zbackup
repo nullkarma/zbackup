@@ -4,14 +4,14 @@
 zbackup
 
     Usage:
-        zbackup create <fs> [--configfile=<configfile>]
-        zbackup destroy <fs> [--configfile=<configfile>]
-        zbackup snap <fs> [--configfile=<configfile>]
-        zbackup backup <fs> [--configfile=<configfile>]
+        zbackup create <fs> [--config=<config>]
+        zbackup destroy <fs> [--config=<config>]
+        zbackup snap <fs> [--config=<config>]
+        zbackup backup <fs> [--config=<config>]
         zbackup -h | --help
         zbackup --version
     Options:
-        --configfile=<configfile>       [default: /etc/zbackup/config.yaml]
+        --config=<config>       [default: /etc/zbackup/config.yaml]
 """
 
 import docopt
@@ -150,7 +150,7 @@ log.setLevel(logging.INFO)
 if __name__ == '__main__':
 
     options = docopt.docopt(__doc__)
-    configfile = options['--configfile']
+    configfile = options['--config']
 
     filesystem = options['<fs>']
     mountpoint = path.join('/', filesystem)
