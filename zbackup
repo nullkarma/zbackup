@@ -26,13 +26,6 @@ from datetime import datetime
 from subprocess import Popen, PIPE
 
 
-def lexer(value):
-    lex = shlex.shlex(value)
-    lex.quotes = "'"
-    lex.whitespace_split = True
-    return list(lex)
-
-
 def update_sync_config(conf):
     for k, v in [(item, conf.get(item, [])) for item in ["exclude", "include"]]:
         try:
