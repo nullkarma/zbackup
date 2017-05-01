@@ -185,7 +185,5 @@ if __name__ == '__main__':
         snapshot(filesystem)
 
     if options['backup']:
-        #backup()
-        #snapshot(filesystem)
-
-        print config
+        backup()
+        snapshot(filesystem)
