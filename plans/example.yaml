@@ -1,7 +1,6 @@
 ---
 
 rsync_user: hansolo
-rsync_key: /root/.ssh/backup
 rotate: 100
 rsync_args:
   - archive
