@@ -141,7 +141,7 @@ backup/hosts/^db[0-9]+.example.org$: # BAD
 The merge rules for `config` parameters from the zfc definition level also apply to plans.
 In this example, `exclude` would contain `some/dir/*` and `var/lib/postgresql/*`.
 Inherited parameters can be completely overridden/ignored by passing the `plan` parameter to a plan.
-If `plan` is given, `config` will is omitted in case of a match.
+If `plan` is given, `config` will be omitted in case of a match.
 
 ```yaml
 plans:
