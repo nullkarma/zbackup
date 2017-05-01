@@ -116,9 +116,6 @@ def destroy(fs):
 
 
 def backup():
-    if not path.exists(mountpoint):
-        create(filesystem)
-
     rsync_include = '--include-from=' + path.join(metadata, 'include')
     rsync_exclude = '--exclude-from=' + path.join(metadata, 'exclude')
     rsync_agrs = ['--' + arg for arg in config['rsync_args']]
