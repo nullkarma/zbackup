@@ -138,10 +138,10 @@ def backup():
 
 def dump_metadata():
     with open(path.join(metadata, 'include'), 'wb') as incl:
-        incl.writelines('\n'.join(config['include']))
+        incl.writelines('\n'.join(config['include']) + '\n')
 
     with open(path.join(metadata, 'exclude'), 'wb') as excl:
-        excl.writelines('\n'.join(config['exclude']))
+        excl.writelines('\n'.join(config['exclude']) + '\n')
 
 
 log = logging.getLogger('zbackup')
