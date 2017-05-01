@@ -34,11 +34,14 @@ def lexer(value):
 
 
 def update_sync_config(conf):
-    for k,v in [(item, conf.get(item, [])) for item in ["rsync_args", "exclude", "include"]]:
+    for k,v in [(item, conf.get(item, [])) for item in ["exclude", "include"]]:
         try:
             config[k] += v
         except KeyError:
             config[k] = v
+
+    if conf.get('rsync_args'):
+        config["rsync_args"] = conf.get('rsync_args')
 
     n = conf.copy()
     for item in ["rsync_args", "exclude", "include"]:

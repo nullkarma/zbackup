@@ -49,7 +49,7 @@ backup/hosts:
       config:
         rotate: 6
     - match: "^testing[0-9]+.brownbag$"
-      plan: plans/example.yaml
+      #plan: plans/example.yaml
       config:
         rotate: 20
         exclude:
