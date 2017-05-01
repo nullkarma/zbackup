@@ -96,7 +96,7 @@ backup/hosts:
     plans:
 ```
 
-Every child would inherit its parents config, excludes and includes.
+Every child would inherit its parent config, excludes and includes.
 A plan can match a pattern and apply special configs to a single or a group of filesystems.
 Your postgresql databases should have a `rotation` of `10`,
 exclude the `/var/lib/postgresql` directory and inherit all other parameters from its parent.
@@ -119,8 +119,14 @@ backup/hosts:
                     - var/lib/postgresql/*
 ```
 
-The same rules for `config` parameters from the zfc definition level applies to plans.
-In this example, exclude would contain `some/dir/*` and `var/lib/postgresql/*`.
+Regex Pattern can only be used within a `plan` context. But not at zfc level.
+
+```
+backup/hosts/^db[0-9]+.example.org$: # BAD
+```
+
+The merge rules for `config` parameters from the zfc definition level also apply to plans.
+In this example, `exclude` would contain `some/dir/*` and `var/lib/postgresql/*`.
 Inherited parameters can be completely overridden/ignored by passing the `plan` parameter to a plan.
 If `plan` is given, `config` will is omitted in case of a match.
 
